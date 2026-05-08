@@ -177,10 +177,8 @@ End with a warm, short encouraging message. No long paragraphs anywhere."""
         except Exception as e:
             import traceback
             err = traceback.format_exc()
-            logger.error(f"Agent pipeline failed:
-{err}")
-            response_text = f"⚠️ Debug error:
-{err}"
+            logger.error("Agent pipeline failed: " + err)
+            response_text = "Debug error: " + err
 
     clean_text = _clean(response_text)
 
