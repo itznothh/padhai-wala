@@ -175,8 +175,12 @@ End with a warm, short encouraging message. No long paragraphs anywhere."""
             response_text = progress_steps + response_text
 
         except Exception as e:
-            logger.error(f"Agent pipeline failed: {e}")
-            response_text += "\n\n(A technical issue occurred — please try again.)"
+            import traceback
+            err = traceback.format_exc()
+            logger.error(f"Agent pipeline failed:
+{err}")
+            response_text = f"⚠️ Debug error:
+{err}"
 
     clean_text = _clean(response_text)
 
