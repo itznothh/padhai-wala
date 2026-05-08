@@ -3,6 +3,7 @@ import { Routes, Route, useNavigate } from 'react-router-dom'
 import Landing from './components/Landing'
 import Chat from './components/Chat'
 import LanguageToggle from './components/LanguageToggle'
+import Logo from './components/Logo'
 
 function ChatPage({ lang, setLang }) {
   const navigate = useNavigate()
@@ -33,9 +34,10 @@ function ChatPage({ lang, setLang }) {
               <path d="M19 12H5M12 5l-7 7 7 7"/>
             </svg>
           </button>
-          <div className="w-10 h-10 rounded-2xl bg-orange-500 flex items-center justify-center text-xl shadow-sm">
-            🧑‍👧
-          </div>
+
+          {/* Logo replaces emoji avatar */}
+          <Logo size={40} className="rounded-2xl shadow-sm" />
+
           <div>
             <h1 className="font-display font-bold text-orange-300 text-base leading-tight">
               PathGuide AI

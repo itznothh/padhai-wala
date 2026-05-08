@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import Logo from './Logo'
 
 const FEATURES = [
   {
@@ -54,7 +55,7 @@ export default function Landing({ onEnter }) {
       className="min-h-screen flex flex-col overflow-x-hidden"
       style={{ background: 'var(--bg-void)' }}
     >
-      {/* Ambient orbs — more of them, better spread */}
+      {/* Ambient orbs */}
       <div className="orb" style={{ width: 600, height: 600, background: 'rgba(247,97,10,0.08)', top: -150, right: -200, animationDelay: '0s' }} />
       <div className="orb" style={{ width: 400, height: 400, background: 'rgba(247,97,10,0.05)', bottom: 300, left: -120, animationDelay: '3s' }} />
       <div className="orb" style={{ width: 250, height: 250, background: 'rgba(247,97,10,0.04)', top: '40%', left: '50%', animationDelay: '1.5s' }} />
@@ -65,12 +66,8 @@ export default function Landing({ onEnter }) {
         style={{ borderBottom: '1px solid var(--border-dim)' }}
       >
         <div className="flex items-center gap-2.5">
-          <div
-            className="w-8 h-8 rounded-xl flex items-center justify-center text-base"
-            style={{ background: 'var(--orange-glow)', boxShadow: '0 0 20px rgba(247,97,10,0.4)' }}
-          >
-            🧑‍👧
-          </div>
+          {/* Logo replaces emoji in nav */}
+          <Logo size={32} />
           <span className="font-display font-700 text-white text-base tracking-tight">PathGuide AI</span>
         </div>
         <button
@@ -96,7 +93,6 @@ export default function Landing({ onEnter }) {
 
       {/* Hero */}
       <section ref={heroRef} className="flex flex-col items-center text-center px-6 pt-24 pb-20 relative z-10 max-w-3xl mx-auto w-full">
-        {/* Badge */}
         <div
           data-delay="100"
           className="inline-flex items-center gap-2 text-xs font-medium px-3 py-1.5 rounded-full mb-10"
@@ -110,7 +106,6 @@ export default function Landing({ onEnter }) {
           Free · AI-powered · Made for India
         </div>
 
-        {/* Headline */}
         <h1
           data-delay="200"
           className="font-display font-800 leading-none mb-6"
@@ -129,7 +124,6 @@ export default function Landing({ onEnter }) {
           RTE quotas, and free schemes — in Hindi or English, completely free.
         </p>
 
-        {/* CTA */}
         <div data-delay="500" className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
           <button
             onClick={onEnter}
@@ -151,7 +145,6 @@ export default function Landing({ onEnter }) {
           </button>
         </div>
 
-        {/* Stats — more spacing, subtle dividers */}
         <div data-delay="700" className="flex items-center gap-10 mt-16">
           {STATS.map((s, i) => (
             <div key={i} className="text-center relative">
@@ -170,7 +163,6 @@ export default function Landing({ onEnter }) {
 
       {/* Chat preview mockup */}
       <section className="px-6 pb-20 max-w-xl mx-auto w-full relative z-10">
-        {/* Glow behind mockup */}
         <div
           className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-40 pointer-events-none"
           style={{ background: 'radial-gradient(ellipse at center, rgba(247,97,10,0.12) 0%, transparent 70%)', filter: 'blur(20px)' }}
@@ -193,14 +185,15 @@ export default function Landing({ onEnter }) {
           {/* Mock chat */}
           <div className="p-5 space-y-4 text-sm">
             <div className="flex gap-2 items-end">
-              <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-display font-700 flex-shrink-0" style={{ background: 'var(--orange-glow)', color: 'white' }}>G</div>
+              {/* Logo replaces emoji bot avatar */}
+              <Logo size={28} className="flex-shrink-0 rounded-full" />
               <div className="bubble-bot">
                 Namaste! 🙏 Tell me your child's age and I'll find the best free school options near you.
               </div>
             </div>
             <div className="bubble-user" style={{ maxWidth: '60%' }}>My son is 6 years old</div>
             <div className="flex gap-2 items-end">
-              <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-display font-700 flex-shrink-0" style={{ background: 'var(--orange-glow)', color: 'white' }}>G</div>
+              <Logo size={28} className="flex-shrink-0 rounded-full" />
               <div className="bubble-bot">
                 Perfect age for <strong>RTE admission</strong> 🎉 Under Right to Education Act, 25% seats in private schools are <strong>free</strong>. Which city are you in?
               </div>
@@ -277,7 +270,10 @@ export default function Landing({ onEnter }) {
             boxShadow: '0 0 60px rgba(247,97,10,0.08), inset 0 1px 0 rgba(255,255,255,0.04)'
           }}
         >
-          <div className="text-4xl mb-5">🧑‍👧</div>
+          {/* Logo replaces emoji in footer CTA */}
+          <div className="flex justify-center mb-5">
+            <Logo size={56} />
+          </div>
           <h3 className="font-display font-700 text-2xl mb-3" style={{ letterSpacing: '-0.02em' }}>
             Your child's future starts here
           </h3>
