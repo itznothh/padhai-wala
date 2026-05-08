@@ -18,10 +18,10 @@ export default function App() {
           </div>
           <div>
             <h1 className="font-display font-bold text-saffron-800 text-base leading-tight">
-              Padhai Wala
+              PathGuide AI
             </h1>
             <p className="text-xs text-gray-500 leading-tight">
-              Aapke bachche ka free school saathi
+              Navigating the future of learning
             </p>
           </div>
         </div>

@@ -1,10 +1,10 @@
 import { useState, useRef, useEffect } from 'react'
 
 const SUGGESTIONS = [
-  'Mera beta 7 saal ka hai',
-  'SC category hoon, kya milega?',
-  'RTE quota kya hota hai?',
-  'Documents kaun se chahiye?',
+  'My child is 7 years old',
+  'We belong to SC category, what benefits are available?',
+  'What is the RTE quota?',
+  'Which documents are required?',
 ]
 
 export default function InputBar({ onSend, disabled }) {
@@ -69,7 +69,7 @@ export default function InputBar({ onSend, disabled }) {
           value={text}
           onChange={e => setText(e.target.value)}
           onKeyDown={handleKey}
-          placeholder="Apna sawaal poochein... (Hindi ya English)"
+          placeholder="Ask your question here..."
           disabled={disabled}
           rows={1}
           className="flex-1 bg-transparent resize-none outline-none text-sm text-gray-800 placeholder-gray-400 font-body leading-relaxed py-0.5"
@@ -88,7 +88,7 @@ export default function InputBar({ onSend, disabled }) {
       </div>
 
       <p className="text-center text-xs text-gray-400 mt-1.5">
-        Padhai Wala · Free school guidance · AI-powered
+        PathGuide AI · Free school guidance · AI-powered
       </p>
     </div>
   )

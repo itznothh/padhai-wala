@@ -70,7 +70,7 @@ export default function Message({ role, text, loading, isNew }) {
 function Avatar() {
   return (
     <div className="w-8 h-8 rounded-full bg-saffron-500 flex items-center justify-center text-white text-sm font-bold flex-shrink-0 shadow">
-      स
+      G
     </div>
   )
 }

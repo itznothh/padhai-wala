@@ -17,11 +17,11 @@ logger = logging.getLogger(__name__)
 # Per-session store: {session_id: {history: [], profile: {}, searched: bool}}
 _sessions: dict = {}
 
-SYSTEM_PROMPT = """You are Saathi — a warm, trusted AI assistant helping low-income Indian parents find FREE schools for their children.
+SYSTEM_PROMPT = """You are Guide — a warm, trusted AI assistant helping low-income Indian parents find FREE schools for their children.
 
 YOUR PERSONALITY:
 - Speak like an educated, helpful neighbour — never clinical, never condescending
-- Use natural Hinglish (mix of Hindi and English) based on what the user uses
+- Use clear English, keeping it simple and accessible
 - Always be encouraging — these parents face real barriers
 - Never use jargon without explaining it simply
 
@@ -41,7 +41,7 @@ FORMATTING for results:
 - 🟡 Scheme/quota options — require application
 - 🔵 Long-term — exam-based options
 - 📋 Document checklist — exact office, cost, days for EACH document
-- ⏰ "Pehle yeh karo" — ONE clear first action
+- ⏰ "Do this first" — ONE clear first action
 
 RULES:
 - Max 3 options at a time
@@ -119,7 +119,7 @@ PRIORITY ORDER:
 
 Now present ALL of this to the parent warmly and clearly. 
 Give easiest option first. Include exact document instructions.
-End with one clear "Pehle yeh karo" step."""
+End with one clear "Do this first" step."""
 
             messages2 = [{"role": "system", "content": SYSTEM_PROMPT}]
             messages2.extend(history)
@@ -129,7 +129,7 @@ End with one clear "Pehle yeh karo" step."""
 
         except Exception as e:
             logger.error(f"Agent pipeline failed: {e}")
-            response_text += "\n\n(Kuch technical issue hua — please dobara try karein.)"
+            response_text += "\n\n(A technical issue occurred — please try again.)"
 
     clean_text = _clean(response_text)
 

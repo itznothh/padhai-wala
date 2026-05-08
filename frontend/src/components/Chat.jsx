@@ -3,11 +3,11 @@ import Message from './Message'
 import InputBar from './InputBar'
 import { sendMessage, newSession, resetSession } from '../api/chat'
 
-const WELCOME = `Namaste! 🙏 Main Saathi hoon — aapka padhai ka dost.
+const WELCOME = `Hello! 🙏 I'm Guide — your learning companion.
 
-Main aapke bachche ke liye **bilkul free** mein best school dhundhne mein madad karunga — government schools, free schemes, aur exact documents ki poori jaankari.
+I'll help you find the **best free schools** for your child — government schools, free schemes, and complete information about the exact documents needed.
 
-Pehle mujhe batao — **aapka bachcha kitne saal ka hai?**`
+Let's start — **how old is your child?**`
 
 export default function Chat({ lang }) {
   const [messages, setMessages]     = useState([{ role: 'assistant', text: WELCOME }])
@@ -38,10 +38,10 @@ export default function Chat({ lang }) {
       setMessages(prev => [...prev, { role: 'assistant', text: data.response, isNew: true }])
       if (data.has_results) setHasResults(true)
     } catch (err) {
-      setError('Kuch problem aayi. Internet check karein aur dobara try karein.')
+      setError('Something went wrong. Please check your internet and try again.')
       setMessages(prev => [...prev, {
         role: 'assistant',
-        text: '⚠️ Sorry, kuch technical issue hua. Please dobara try karein.',
+        text: '⚠️ Sorry, a technical issue occurred. Please try again.',
         isNew: true
       }])
     }
@@ -63,7 +63,7 @@ export default function Chat({ lang }) {
       {hasResults && (
         <div className="bg-green-50 border-b border-green-100 px-4 py-2 text-xs text-green-700 flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-green-500 flex-shrink-0" />
-          School options mil gayi! Upar dekho 👆
+          School options found! Scroll up to see 👆
         </div>
       )}
       {error && (
@@ -88,7 +88,7 @@ export default function Chat({ lang }) {
             onClick={handleReset}
             className="text-xs text-gray-400 hover:text-saffron-500 transition-colors"
           >
-            🔄 Nayi baat shuru karein
+            🔄 Start a new conversation
           </button>
         </div>
       )}
