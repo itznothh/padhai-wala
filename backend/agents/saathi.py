@@ -138,32 +138,12 @@ PRIORITY ORDER:
 {json.dumps(priorities, indent=2, ensure_ascii=False)}
 </SEARCH_RESULTS>
 
-Present the above using EXACTLY this structure — no deviations:
-
-🏫 **Recommended Schools**
-List each school as:
-- **[Name]** — [Admission Type] | [Medium of instruction]
-  → [Why recommended in one line]
-(Easiest/free options first. Max 3.)
-
-📄 **Documents Needed**
-For each document:
-- **[Document Name]** — Get from: [Exact office/place] | Ready in: [X days] | Cost: [₹X or Free]
-
-⏰ **Important Deadlines**
-- **[Scheme/School]** — Deadline: [Date or season] — [Urgent / Apply now / Plan ahead]
-
-👉 **Do This First**
-Write ONE simple action the parent can take today. Be specific (e.g. "Visit [School Name] tomorrow morning with your Aadhaar card and ask for the RTE admission form.")
-
----
-End with a warm, short encouraging message. No long paragraphs anywhere."""
+Present the search results using the required structured format. Keep responses short, scannable, and mobile-friendly."""
 
             messages2 = [{"role": "system", "content": SYSTEM_PROMPT}]
-            messages2.extend(history)
             messages2.append({"role": "user", "content": user_message + "\n\n" + search_context})
 
-            response_text = chat_completion(messages2, temperature=0.7, max_tokens=2048)
+            response_text = chat_completion(messages2, temperature=0.7, max_tokens=1000)
 
             # Prepend subtle orchestration progress steps
             progress_steps = (
@@ -178,7 +158,7 @@ End with a warm, short encouraging message. No long paragraphs anywhere."""
             import traceback
             err = traceback.format_exc()
             logger.error("Agent pipeline failed: " + err)
-            response_text = "Debug error: " + err
+            response_text = "⚠️ Sorry, a technical issue occurred. Please try again."
 
     clean_text = _clean(response_text)
 
