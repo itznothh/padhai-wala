@@ -10,12 +10,26 @@ I'll help you find the **best free schools** for your child — government schoo
 Let's start — **how old is your child?**`
 
 export default function Chat({ lang }) {
-  const [messages, setMessages]     = useState([{ role: 'assistant', text: WELCOME }])
+  const [messages, setMessages] = useState(() => {
+    try {
+      const saved = localStorage.getItem('pg_messages')
+      return saved ? JSON.parse(saved) : [{ role: 'assistant', text: WELCOME }]
+    } catch {
+      return [{ role: 'assistant', text: WELCOME }]
+    }
+  })
   const [loading, setLoading]       = useState(false)
   const [sessionId, setSessionId]   = useState('default')
   const [hasResults, setHasResults] = useState(false)
   const [error, setError]           = useState(null)
   const bottomRef = useRef(null)
+
+  // Persist messages to localStorage
+  useEffect(() => {
+    try {
+      localStorage.setItem('pg_messages', JSON.stringify(messages))
+    } catch {}
+  }, [messages])
 
   useEffect(() => {
     newSession()
@@ -50,6 +64,7 @@ export default function Chat({ lang }) {
     await resetSession(sessionId)
     const data = await newSession()
     setSessionId(data.session_id)
+    localStorage.removeItem('pg_messages')
     setMessages([{ role: 'assistant', text: WELCOME }])
     setHasResults(false)
     setError(null)

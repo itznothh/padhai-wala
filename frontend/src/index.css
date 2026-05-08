@@ -28,6 +28,7 @@
     height: 100%;
     margin: 0;
     padding: 0;
+    overflow-x: hidden;
     background-color: var(--bg-void);
     font-family: 'DM Sans', sans-serif;
     -webkit-font-smoothing: antialiased;
