@@ -46,7 +46,7 @@ def root():
     }
 
 
-@app.get("/health")
+@app.api_route("/health", methods=["GET", "HEAD"])
 def health():
     gemini_ok = bool(os.getenv("GEMINI_API_KEY"))
     serper_ok = bool(os.getenv("SERPER_API_KEY"))
