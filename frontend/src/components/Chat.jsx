@@ -9,6 +9,13 @@ I'll help you find the **best free schools** for your child — government schoo
 
 Let's start — **how old is your child?**`
 
+// Confirmation message shown when user switches language
+const LANG_SWITCH_MSG = {
+  Hindi:   '🌐 ठीक है! अब मैं हिंदी में जवाब दूँगा।',
+  English: "🌐 Got it! I'll now respond in English.",
+  Kannada: '🌐 ಸರಿ! ಇನ್ನು ಮುಂದೆ ನಾನು ಕನ್ನಡದಲ್ಲಿ ಉತ್ತರಿಸುತ್ತೇನೆ.',
+}
+
 export default function Chat({ lang }) {
   const [messages, setMessages] = useState(() => {
     try {
@@ -22,7 +29,8 @@ export default function Chat({ lang }) {
   const [sessionId, setSessionId]   = useState('default')
   const [hasResults, setHasResults] = useState(false)
   const [error, setError]           = useState(null)
-  const bottomRef = useRef(null)
+  const bottomRef    = useRef(null)
+  const isFirstRender = useRef(true)   // ← tracks initial mount
 
   // Persist messages to localStorage
   useEffect(() => {
@@ -31,22 +39,37 @@ export default function Chat({ lang }) {
     } catch {}
   }, [messages])
 
+  // Create session on mount
   useEffect(() => {
     newSession()
       .then(data => setSessionId(data.session_id))
       .catch(() => setSessionId('default-' + Date.now()))
   }, [])
 
+  // Auto-scroll on new message
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages, loading])
 
+  // Show language-switch confirmation whenever lang changes (skip first render)
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false
+      return
+    }
+    setMessages(prev => [
+      ...prev,
+      { role: 'assistant', text: LANG_SWITCH_MSG[lang] ?? LANG_SWITCH_MSG.English, isNew: true },
+    ])
+  }, [lang])
+
+  // Send user message — passes current lang to backend
   const handleSend = useCallback(async (text) => {
     setMessages(prev => [...prev, { role: 'user', text, isNew: true }])
     setLoading(true)
     setError(null)
     try {
-      const data = await sendMessage(text, sessionId)
+      const data = await sendMessage(text, sessionId, lang)   // ← lang passed here
       setMessages(prev => [...prev, { role: 'assistant', text: data.response, isNew: true }])
       if (data.has_results) setHasResults(true)
     } catch {
@@ -58,7 +81,7 @@ export default function Chat({ lang }) {
       }])
     }
     setLoading(false)
-  }, [sessionId])
+  }, [sessionId, lang])   // ← lang in dependency array
 
   const handleReset = async () => {
     await resetSession(sessionId)

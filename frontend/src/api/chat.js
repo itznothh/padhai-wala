@@ -1,25 +1,39 @@
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+const BASE = '/api'
 
-export async function sendMessage(message, sessionId) {
-  const res = await fetch(`${BASE_URL}/chat`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message, session_id: sessionId }),
-  })
-  if (!res.ok) throw new Error(`API error: ${res.status}`)
-  return res.json()
-}
+// ── Session management ──────────────────────────────────────────────────────
 
 export async function newSession() {
-  const res = await fetch(`${BASE_URL}/session/new`, { method: 'POST' })
+  const res = await fetch(`${BASE}/session`, { method: 'POST' })
   if (!res.ok) throw new Error('Failed to create session')
-  return res.json()
+  return res.json()   // expects { session_id: string }
 }
 
 export async function resetSession(sessionId) {
-  await fetch(`${BASE_URL}/session/reset`, {
+  const res = await fetch(`${BASE}/session/${sessionId}`, { method: 'DELETE' })
+  if (!res.ok) throw new Error('Failed to reset session')
+  return res.json()
+}
+
+// ── Chat ────────────────────────────────────────────────────────────────────
+
+/**
+ * Send a user message to the backend.
+ *
+ * @param {string} text       - The user's message
+ * @param {string} sessionId  - Active session ID
+ * @param {string} lang       - Currently selected language: 'English' | 'Hindi' | 'Kannada'
+ * @returns {Promise<{ response: string, has_results?: boolean }>}
+ */
+export async function sendMessage(text, sessionId, lang = 'English') {
+  const res = await fetch(`${BASE}/chat`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ session_id: sessionId }),
+    body: JSON.stringify({
+      message:    text,
+      session_id: sessionId,
+      language:   lang,        // ← backend reads this to set response language
+    }),
   })
+  if (!res.ok) throw new Error(`Chat request failed: ${res.status}`)
+  return res.json()   // expects { response: string, has_results?: boolean }
 }
