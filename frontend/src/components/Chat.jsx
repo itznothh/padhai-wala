@@ -84,7 +84,7 @@ export default function Chat({ lang }) {
   }, [sessionId, lang])   // ← lang in dependency array
 
   const handleReset = async () => {
-    await resetSession(sessionId)
+    try { await resetSession(sessionId) } catch {} // non-fatal — continue regardless
     const data = await newSession()
     setSessionId(data.session_id)
     localStorage.removeItem('pg_messages')
