@@ -13,25 +13,34 @@ function ChatPage({ lang, setLang }) {
       style={{ background: 'linear-gradient(180deg, #FFF8F0 0%, #FAF5EB 100%)' }}
     >
       {/* Header */}
-      <header className="bg-white border-b border-saffron-100 px-4 py-3 flex items-center justify-between shadow-sm flex-shrink-0">
+      <header
+        className="px-5 py-3 flex items-center justify-between flex-shrink-0 sticky top-0 z-10 w-full"
+        style={{
+          background: 'rgba(15, 10, 5, 0.82)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          borderBottom: '1px solid rgba(251, 146, 60, 0.25)',
+          boxShadow: '0 1px 30px rgba(251, 146, 60, 0.08)',
+        }}
+      >
         <div className="flex items-center gap-3">
           <button
             onClick={() => navigate('/')}
-            className="w-8 h-8 rounded-xl flex items-center justify-center text-saffron-500 hover:bg-saffron-50 transition-colors"
+            className="w-8 h-8 rounded-xl flex items-center justify-center text-orange-400 hover:bg-white/10 transition-colors"
             aria-label="Back to home"
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <path d="M19 12H5M12 5l-7 7 7 7"/>
             </svg>
           </button>
-          <div className="w-10 h-10 rounded-2xl bg-saffron-500 flex items-center justify-center text-xl shadow-sm">
+          <div className="w-10 h-10 rounded-2xl bg-orange-500 flex items-center justify-center text-xl shadow-sm">
             🧑‍👧
           </div>
           <div>
-            <h1 className="font-display font-bold text-saffron-800 text-base leading-tight">
+            <h1 className="font-display font-bold text-orange-300 text-base leading-tight">
               PathGuide AI
             </h1>
-            <p className="text-xs text-gray-500 leading-tight">
+            <p className="text-xs leading-tight" style={{ color: 'rgba(254, 215, 170, 0.5)' }}>
               Navigating the future of learning
             </p>
           </div>
@@ -39,7 +48,7 @@ function ChatPage({ lang, setLang }) {
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-1">
             <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-            <span className="text-xs text-gray-400">Online</span>
+            <span className="text-xs" style={{ color: 'rgba(254, 215, 170, 0.4)' }}>Online</span>
           </div>
           <LanguageToggle lang={lang} onChange={setLang} />
         </div>
