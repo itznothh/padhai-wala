@@ -1,4 +1,4 @@
-const BASE = '/api'
+const BASE = 'https://padhai-wala-backend.onrender.com'
 
 // ── Session management ──────────────────────────────────────────────────────
 
@@ -16,14 +16,6 @@ export async function resetSession(sessionId) {
 
 // ── Chat ────────────────────────────────────────────────────────────────────
 
-/**
- * Send a user message to the backend.
- *
- * @param {string} text       - The user's message
- * @param {string} sessionId  - Active session ID
- * @param {string} lang       - Currently selected language: 'English' | 'Hindi' | 'Kannada'
- * @returns {Promise<{ response: string, has_results?: boolean }>}
- */
 export async function sendMessage(text, sessionId, lang = 'English') {
   const res = await fetch(`${BASE}/chat`, {
     method: 'POST',
@@ -31,9 +23,9 @@ export async function sendMessage(text, sessionId, lang = 'English') {
     body: JSON.stringify({
       message:    text,
       session_id: sessionId,
-      language:   lang,        // ← backend reads this to set response language
+      language:   lang,
     }),
   })
   if (!res.ok) throw new Error(`Chat request failed: ${res.status}`)
-  return res.json()   // expects { response: string, has_results?: boolean }
+  return res.json()
 }
