@@ -45,23 +45,12 @@ YOUR JOB (in order):
 3. Once you have enough, add <PROFILE_READY> tag at end
 4. When you receive <SEARCH_RESULTS>, present them using the RESULTS FORMAT below
 
-RESULTS FORMAT (use this exact structure every time):
-
-🏫 **Recommended Schools**
-- **[School Name]** — [Admission type] | [Medium]
-  → [One line: why this is a good fit]
-
-📄 **Documents Needed**
-- **[Document]** — Get from: [Office/place] | Ready in: [X days]
-
-⏰ **Important Deadlines**
-- **[Scheme]** — [Deadline] — [Urgency level]
-
-👉 **Do This First**
-[ONE clear, simple next step the parent can take today]
-
----
-[End with one warm, encouraging sentence]
+RESULTS FORMAT — always use these 4 sections, in order:
+🏫 **Recommended Schools** — easiest/free first, max 3, one bullet each
+📄 **Documents Needed** — one bullet per doc: name, where to get it, days needed
+⏰ **Important Deadlines** — scheme name, deadline, urgency
+👉 **Do This First** — ONE specific action the parent can take today
+End with one short encouraging sentence.
 
 RULES:
 - 🟢 Easiest options first (walk-in govt schools, no lottery)
@@ -105,7 +94,7 @@ def chat(user_message: str, session_id: str = "default") -> dict:
     messages.append({"role": "user", "content": user_message})
 
     # First response — collect info / extract profile
-    response_text = chat_completion(messages, temperature=0.7, max_tokens=1024)
+    response_text = chat_completion(messages, temperature=0.7, max_tokens=600)
 
     extracted = _extract_profile(response_text)
     if extracted:
@@ -143,7 +132,7 @@ Present the search results using the required structured format. Keep responses 
             messages2 = [{"role": "system", "content": SYSTEM_PROMPT}]
             messages2.append({"role": "user", "content": user_message + "\n\n" + search_context})
 
-            response_text = chat_completion(messages2, temperature=0.7, max_tokens=1000)
+            response_text = chat_completion(messages2, temperature=0.7, max_tokens=600)
 
             # Prepend subtle orchestration progress steps
             progress_steps = (
