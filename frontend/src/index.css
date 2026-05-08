@@ -1,17 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --orange-glow: #F7610A;
+  --orange-deep: #C44D06;
+  --orange-soft: #FF8A40;
+  --orange-muted: rgba(247,97,10,0.12);
+  --orange-border: rgba(247,97,10,0.25);
+  --bg-void: #0C0C0C;
+  --bg-surface: #141414;
+  --bg-raised: #1C1C1C;
+  --bg-card: #212121;
+  --text-primary: #F0EDE8;
+  --text-secondary: #9A9590;
+  --text-muted: #5A5652;
+  --border-dim: rgba(255,255,255,0.06);
+  --border-mid: rgba(255,255,255,0.1);
+}
+
 @layer base {
   * { box-sizing: border-box; }
-  
+
   html, body {
     height: 100%;
     margin: 0;
     padding: 0;
-    background-color: #FAF5EB;
-    font-family: 'Noto Sans', sans-serif;
+    background-color: var(--bg-void);
+    font-family: 'DM Sans', sans-serif;
     -webkit-font-smoothing: antialiased;
+    color: var(--text-primary);
   }
 
   #root {
@@ -21,41 +41,122 @@
   }
 }
 
-@layer components {
-  .message-bubble {
-    @apply rounded-2xl px-4 py-3 text-sm leading-relaxed max-w-[85%] break-words;
-  }
+/* Scrollbar */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--orange-deep); border-radius: 3px; }
 
-  .bubble-user {
-    @apply bg-saffron-500 text-white ml-auto rounded-br-sm;
-  }
-
-  .bubble-bot {
-    @apply bg-white text-gray-800 mr-auto rounded-bl-sm shadow-sm border border-saffron-100;
-  }
-
-  .dot-pulse span {
-    @apply inline-block w-2 h-2 rounded-full bg-saffron-400 mx-0.5;
-    animation: bounceDot 1.2s infinite ease-in-out;
-  }
-  .dot-pulse span:nth-child(2) { animation-delay: 0.15s; }
-  .dot-pulse span:nth-child(3) { animation-delay: 0.30s; }
+/* Grain overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.4;
 }
 
+/* Typography */
+.font-display { font-family: 'Syne', sans-serif; }
+
+/* Landing page animations */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse-ring {
+  0%   { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
 @keyframes bounceDot {
-  0%, 80%, 100% { transform: scale(0); opacity: 0.4; }
+  0%, 80%, 100% { transform: scale(0); opacity: 0.3; }
   40%           { transform: scale(1); opacity: 1; }
 }
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes orb-float {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50%       { transform: translateY(-20px) scale(1.05); }
+}
 
-/* Scrollbar */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #FBB55A; border-radius: 4px; }
+.animate-fade-up   { animation: fadeUp 0.6s ease-out forwards; }
+.animate-fade-in   { animation: fadeIn 0.4s ease-out forwards; }
+.animate-slide-up  { animation: slideUp 0.35s ease-out; }
 
-/* Prose formatting inside bot messages */
-.bot-prose h3     { @apply font-semibold text-saffron-700 mt-3 mb-1 text-sm; }
-.bot-prose strong { @apply font-semibold text-gray-900; }
-.bot-prose ul     { @apply list-none pl-0 space-y-1; }
-.bot-prose li     { @apply flex gap-2 items-start; }
-.bot-prose p      { @apply mb-2 last:mb-0; }
-.bot-prose a      { @apply text-saffron-600 underline; }
+/* Chat bubbles */
+.bubble-user {
+  background: linear-gradient(135deg, var(--orange-glow), var(--orange-deep));
+  color: #fff;
+  border-radius: 20px 20px 4px 20px;
+  padding: 10px 16px;
+  font-size: 14px;
+  line-height: 1.55;
+  max-width: 82%;
+  margin-left: auto;
+  box-shadow: 0 4px 20px rgba(247,97,10,0.25);
+}
+
+.bubble-bot {
+  background: var(--bg-card);
+  border: 1px solid var(--border-mid);
+  color: var(--text-primary);
+  border-radius: 20px 20px 20px 4px;
+  padding: 12px 16px;
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: 86%;
+  margin-right: auto;
+}
+
+/* Dot pulse */
+.dot-pulse span {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--orange-glow);
+  margin: 0 2px;
+  animation: bounceDot 1.2s infinite ease-in-out;
+}
+.dot-pulse span:nth-child(2) { animation-delay: 0.15s; }
+.dot-pulse span:nth-child(3) { animation-delay: 0.30s; }
+
+/* Bot prose */
+.bot-prose h3     { font-family: 'Syne', sans-serif; font-weight: 600; color: var(--orange-soft); margin: 12px 0 4px; font-size: 13px; letter-spacing: 0.03em; text-transform: uppercase; }
+.bot-prose strong { font-weight: 500; color: #fff; }
+.bot-prose ul     { list-style: none; padding: 0; margin: 6px 0; }
+.bot-prose li     { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 4px; }
+.bot-prose li::before { content: '›'; color: var(--orange-glow); flex-shrink: 0; margin-top: 1px; }
+.bot-prose p      { margin: 0 0 8px; }
+.bot-prose p:last-child { margin-bottom: 0; }
+.bot-prose a      { color: var(--orange-soft); text-decoration: underline; text-underline-offset: 2px; }
+
+/* Orange shimmer text */
+.shimmer-text {
+  background: linear-gradient(90deg, var(--orange-soft) 0%, #FFD580 40%, var(--orange-soft) 60%, var(--orange-glow) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3s linear infinite;
+}
+
+/* Orb background */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  animation: orb-float 6s ease-in-out infinite;
+  pointer-events: none;
+}
