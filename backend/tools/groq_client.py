@@ -10,10 +10,14 @@ _client = None
 def get_client() -> Groq:
     global _client
     if _client is None:
-        _client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+        api_key = os.getenv("GROQ_API_KEY")
+        if not api_key:
+            raise ValueError("GROQ_API_KEY is not set in environment variables!")
+        _client = Groq(api_key=api_key)
     return _client
 
-MODEL = "llama3-70b-8192"
+# FIX: use the correct current model name
+MODEL = "llama-3.3-70b-versatile"
 
 def chat_completion(messages: list, temperature: float = 0.7, max_tokens: int = 600) -> str:
     """Simple wrapper around Groq chat completion."""

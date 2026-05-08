@@ -1,6 +1,6 @@
 """
 Agent 1 — Saathi (Orchestrator + Conversationalist)
-Uses Groq (Llama 3.3 70B) for fast, warm Hinglish responses.
+Uses Groq (Llama 3.3 70B) for fast, warm responses.
 """
 import json
 import logging
@@ -21,7 +21,7 @@ SYSTEM_PROMPT = """You are Guide — a warm, trusted AI assistant helping low-in
 
 YOUR PERSONALITY:
 - Speak like an educated, helpful neighbour — never clinical, never condescending
-- Use clear English, keeping it simple and accessible
+- Use clear, simple language
 - Always be encouraging — these parents face real barriers
 - Never use jargon without explaining it simply
 
@@ -73,13 +73,19 @@ def _clean(text: str) -> str:
     return re.sub(r"<PROFILE_READY>.*?</PROFILE_READY>", "", text, flags=re.DOTALL).strip()
 
 
-def chat(user_message: str, session_id: str = "default") -> dict:
+# ── FIX: accept language param and inject into system prompt ──────────────────
+
+def chat(user_message: str, session_id: str = "default", language: str = "English") -> dict:
     session = _get_session(session_id)
     history = session["history"]
     profile = session["profile"]
 
+    # Inject language instruction into system prompt
+    lang_instruction = f"\n\nIMPORTANT: You MUST respond entirely in {language}. Do not switch languages."
+    system_with_lang = SYSTEM_PROMPT + lang_instruction
+
     # Build messages for Groq
-    messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+    messages = [{"role": "system", "content": system_with_lang}]
     messages.extend(history)
     messages.append({"role": "user", "content": user_message})
 
@@ -117,11 +123,12 @@ PRIORITY ORDER:
 {json.dumps(priorities, indent=2, ensure_ascii=False)}
 </SEARCH_RESULTS>
 
-Now present ALL of this to the parent warmly and clearly. 
+Now present ALL of this to the parent warmly and clearly.
 Give easiest option first. Include exact document instructions.
-End with one clear "Do this first" step."""
+End with one clear "Do this first" step.
+Remember: respond in {language}."""
 
-            messages2 = [{"role": "system", "content": SYSTEM_PROMPT}]
+            messages2 = [{"role": "system", "content": system_with_lang}]
             messages2.extend(history)
             messages2.append({"role": "user", "content": user_message + "\n\n" + search_context})
 

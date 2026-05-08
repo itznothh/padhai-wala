@@ -28,14 +28,15 @@ app.add_middleware(
 )
 
 
+# ── Request models ────────────────────────────────────────────────────────────
+
 class ChatRequest(BaseModel):
     message: str
     session_id: str = "default"
+    language: str = "English"   # ← FIX 1: accept language from frontend
 
 
-class ResetRequest(BaseModel):
-    session_id: str = "default"
-
+# ── Routes ────────────────────────────────────────────────────────────────────
 
 @app.get("/")
 def root():
@@ -48,11 +49,11 @@ def root():
 
 @app.api_route("/health", methods=["GET", "HEAD"])
 def health():
-    gemini_ok = bool(os.getenv("GEMINI_API_KEY"))
+    groq_ok   = bool(os.getenv("GROQ_API_KEY"))
     serper_ok = bool(os.getenv("SERPER_API_KEY"))
     return {
         "status": "ok",
-        "gemini_configured": gemini_ok,
+        "groq_configured":   groq_ok,
         "serper_configured": serper_ok
     }
 
@@ -60,21 +61,22 @@ def health():
 @app.post("/chat")
 def chat_endpoint(req: ChatRequest):
     try:
-        result = chat(req.message, req.session_id)
+        result = chat(req.message, req.session_id, req.language)  # ← FIX 1: pass language
         return result
     except Exception as e:
         logger.error(f"Chat error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.post("/session/new")
+# ── FIX 2: routes now match what the frontend expects ─────────────────────────
+
+@app.post("/session")                        # frontend calls POST /api/session
 def new_session():
-    """Generate a new session ID for a fresh conversation."""
     session_id = str(uuid.uuid4())
     return {"session_id": session_id}
 
 
-@app.post("/session/reset")
-def reset_session_endpoint(req: ResetRequest):
-    reset_session(req.session_id)
-    return {"status": "reset", "session_id": req.session_id}
+@app.delete("/session/{session_id}")         # frontend calls DELETE /api/session/{id}
+def reset_session_endpoint(session_id: str):
+    reset_session(session_id)
+    return {"status": "reset", "session_id": session_id}
